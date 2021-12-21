@@ -1,0 +1,23 @@
+tox
+
+# Testing.
+pytest
+pytest-cov
+
+# Type checking.
+mypy
+
+# Linting.
+flake8
+flake8-comprehensions
+flake8-commas
+flake8-return
+flake8-simplify
+pep8-naming
+flake8-functions
+flake8-cognitive-complexity
+flake8-expression-complexity
+
+# Formatting.
+black
+isort
