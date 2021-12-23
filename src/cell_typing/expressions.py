@@ -65,7 +65,8 @@ class CellsDataset(Dataset):
     @beartype
     def __getitem__(self,
                     index: int):
-        contour = self.contours[self.indexes[index]]
+        contour_index = self.indexes[index]
+        contour = self.contours[contour_index]
         min_x, min_y = contour.min(axis=0)
         max_x, max_y = contour.max(axis=0)
 
@@ -86,7 +87,7 @@ class CellsDataset(Dataset):
         cell = torch.Tensor(cell)
         cell = cell.permute(2, 0, 1)
 
-        return cell, np.array([self.indexes[index]])
+        return cell, np.array([contour_index])
 
 
 class CellPredictor:
@@ -125,8 +126,8 @@ class CellPredictor:
                 predicted = self.model(cells.to(self.device))
                 predicted = torch.nn.functional.softmax(predicted, dim=1)
                 predicted_labels = predicted.cpu().numpy()
-                for en, ix in enumerate(indexes):
-                    label = predicted_labels[en, 0]
+                for predicted_label, ix in zip(predicted_labels, indexes):
+                    label = predicted_label[0]
                     annotation = {
                         'index': ix.numpy()[0],
                         f'{marker_name}_probability': label,
