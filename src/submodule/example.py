@@ -1,5 +1,5 @@
-import numpy as np
 from mxifpublic.submodule.submodule_c_name import test_sqr_c
+import numpy as np
 
 
 def test_sqrt(array: np.ndarray) -> np.ndarray:

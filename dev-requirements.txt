@@ -63,7 +63,7 @@ mccabe==0.6.1
     # via flake8
 mr-proper==0.0.7
     # via flake8-functions
-mypy==0.920
+mypy==0.930
     # via -r dev-requirements.in
 mypy-extensions==0.4.3
     # via
