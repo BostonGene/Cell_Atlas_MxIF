@@ -1,15 +1,35 @@
-#  Template python-build
+# This is an example Starter pipeline configuration
+# Use a skeleton to build, test and deploy using manual and parallel steps
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
 
-#  This template allows you to validate your python code.
-#  The workflow allows running tests and code linting on the default branch.
-
-image: python:3.8
+image: atlassian/default-image:3
 
 pipelines:
   default:
     - parallel:
       - step:
-          name: flake8 check
+          name: 'Build and Test'
           script:
-            - pip install tox
-            - tox -e flake8
+            - echo "Your build and test goes here..."
+      - step:
+          name: 'Lint'
+          script:
+            - echo "Your linting goes here..."
+      - step:
+          name: 'Security scan'
+          script:
+            - echo "Your security scan goes here..."
+
+    # The following deployment steps will be executed for each pipeline run. To configure your steps and conditionally deploy see https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/
+    - step:
+        name: 'Deployment to Staging'
+        deployment: staging
+        script:
+          - echo "Your deployment to staging script goes here..."
+    - step:
+        name: 'Deployment to Production'
+        deployment: production
+        trigger: 'manual'
+        script:
+          - echo "Your deployment to production script goes here..."
