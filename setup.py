@@ -36,7 +36,9 @@ if __name__ == "__main__":
 
         include_package_data=True,
         package_data={
-        "submodule": ["py.typed"],
+            "submodule": ["py.typed"],
+            "cell_typing": ["py.typed"],
+            "permutation": ["py.typed"],
         },
         
         setup_requires=['wheel'],
