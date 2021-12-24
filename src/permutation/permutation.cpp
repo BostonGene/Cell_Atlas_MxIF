@@ -43,10 +43,10 @@ void sum_by_row(uint32_t *contact, uint32_t *sum_row, int n_classes)
 static PyObject* adjacency_label_permutation(PyObject *self, PyObject *args) {
 	PyObject *arg1 = NULL;
 	PyObject *arg2 = NULL;
-	int32_t n_classes, permut, seed;
+	int32_t n_classes, num_permutation, seed;
 	int threads = 1;
 
-	if (!PyArg_ParseTuple(args, "OOiiii", &arg1, &arg2, &n_classes, &permut, &threads, &seed))
+	if (!PyArg_ParseTuple(args, "OOiiii", &arg1, &arg2, &n_classes, &num_permutation, &threads, &seed))
 		return PyErr_Format(PyExc_Exception, "Can't parse input adjacency_label_permutation.");
 
 	if (threads < 0)
@@ -63,7 +63,7 @@ static PyObject* adjacency_label_permutation(PyObject *self, PyObject *args) {
 		rng_lst[i] = rng;
 	}
 
-	int n_classes2 = n_classes * n_classes;
+	int n_classes_squared = n_classes * n_classes;
 	// Get size of list
 	int list_size = (int) PyList_Size(arg1);
 
@@ -95,7 +95,7 @@ static PyObject* adjacency_label_permutation(PyObject *self, PyObject *args) {
 	{
 		for (int i = 0; i < threads; i++)
 		{
-			contact_lst[i] = (uint32_t *)malloc(n_classes2 * sizeof(uint32_t));
+			contact_lst[i] = (uint32_t *)malloc(n_classes_squared * sizeof(uint32_t));
 		}
 	}
 	else
@@ -111,9 +111,9 @@ static PyObject* adjacency_label_permutation(PyObject *self, PyObject *args) {
 		malloc_error = 1;
 
 	// Init memory for saving results
-	double *ref_cell_contact = (double*)malloc(n_classes2 * sizeof(double));
-	uint32_t *contact_likelihood = (uint32_t*)malloc(n_classes2 * sizeof(uint32_t));
-	double *contact_likelihood_result = (double*)malloc(n_classes2 * sizeof(double));
+	double *ref_cell_contact = (double*)malloc(n_classes_squared * sizeof(double));
+	uint32_t *contact_likelihood = (uint32_t*)malloc(n_classes_squared * sizeof(uint32_t));
+	double *contact_likelihood_result = (double*)malloc(n_classes_squared * sizeof(double));
 
 	if (malloc_error)
 	{
@@ -133,27 +133,27 @@ static PyObject* adjacency_label_permutation(PyObject *self, PyObject *args) {
 	}
 
 	// Init initial values
-	for (int i = 0; i < n_classes2; i++)
+	for (int i = 0; i < n_classes_squared; i++)
 		contact_likelihood[i] = 1;
 
 	// Get reference matrix
 	calculate_cell_contact_percentages(lst, cell_type, contact_lst[0], list_size, n_classes, threads);
 	sum_by_row(contact_lst[0], sum_row_lst[0], n_classes);
 
-	for (int i = 0; i < n_classes2; i++)
+	for (int i = 0; i < n_classes_squared; i++)
 		ref_cell_contact[i] = (double)contact_lst[0][i] / (double)sum_row_lst[0][i % n_classes];
 
 	// Calculate likelihood
 	#pragma omp parallel num_threads(threads)
 	{
 		#pragma omp for
-		for (int i = 0; i < permut; i++)
+		for (int i = 0; i < num_permutation; i++)
 		{
 			int tid = omp_get_thread_num();
 			shuffle(cell_type_lst[tid].begin(), cell_type_lst[tid].end(), rng_lst[tid]);
 			calculate_cell_contact_percentages(lst, cell_type_lst[tid], contact_lst[tid], list_size, n_classes, threads);
 			sum_by_row(contact_lst[tid], sum_row_lst[tid], n_classes);
-			for (int j = 0; j < n_classes2; j++)
+			for (int j = 0; j < n_classes_squared; j++)
 			{
 				// Need to wait for access to memory
 				#pragma omp atomic
@@ -162,13 +162,13 @@ static PyObject* adjacency_label_permutation(PyObject *self, PyObject *args) {
 		}
 	}
 
-	for (int i = 0; i < n_classes2; i++)
-		contact_likelihood_result[i] = (double)contact_likelihood[i] / (permut + 1);
+	for (int i = 0; i < n_classes_squared; i++)
+		contact_likelihood_result[i] = (double)contact_likelihood[i] / (num_permutation + 1);
 
 	// Write the answer
 	npy_intp dims[2] = {n_classes, n_classes};
 	PyObject *ans = PyArray_SimpleNew(2, dims, NPY_FLOAT64);
-	memcpy((double*)PyArray_DATA(ans), contact_likelihood_result, n_classes2 * sizeof(double));
+	memcpy((double*)PyArray_DATA(ans), contact_likelihood_result, n_classes_squared * sizeof(double));
 
 	// Free memory
 	free(contact_likelihood_result);
