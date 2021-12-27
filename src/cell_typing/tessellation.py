@@ -33,21 +33,13 @@ def tessellate(image: npt.NDArray[np.uint8],
 
     x_tesselation = np.arange(0, image.shape[0], side_size, dtype='int32')
     y_tesselation = np.arange(0, image.shape[1], side_size, dtype='int32')
-    tesselation_mask = np.zeros((x_tesselation.shape[0]-1,
-                                 y_tesselation.shape[0]-1),
-                                dtype='float32')
-    for i, x in enumerate(x_tesselation[:-1]):
-        for j, y in enumerate(y_tesselation[:-1]):
-            next_x = x_tesselation[i+1]
-            next_y = y_tesselation[j+1]
-            area = (next_x - x) * (next_y - y)
-            area_mask = mask[x:next_x, y:next_y]
-            if area_mask.sum() < area:
-                tesselation_mask[i, j] = -1
-                continue
-            image_area = (image[x:next_x, y:next_y]).sum()
-            tesselation_mask[i, j] = image_area / area
-    return tesselation_mask
+    reduced_image = np.add.reduceat(np.add.reduceat(image, x_tesselation, axis=0),
+                                    y_tesselation, axis=1)
+    reduced_mask = np.add.reduceat(np.add.reduceat(mask, x_tesselation, axis=0),
+                                   y_tesselation, axis=1)
+    reduced_mask = reduced_mask == (side_size ** 2)
+
+    return (reduced_image / (side_size ** 2) * reduced_mask).astype(np.float32)
 
 
 @beartype
