@@ -92,4 +92,4 @@ def gather_parameters(masks: List[npt.NDArray[np.uint8]],
                        artefact_mask.ravel(),
                        *expressions)).T
     parameters = pd.DataFrame(table, columns=['x', 'y', 'mask'] + marker_names)
-    return parameters[parameters['mask'] == 1].reset_index(drop=True)
+    return parameters[parameters['mask'] == 1].reset_index(drop=True).drop('mask', axis=1)
