@@ -39,5 +39,5 @@ def adjacency_label_permutation(
         n_classes = np.max(cell_type) + 1
 
     return permutation_c.adjacency_label_permutation_c(
-        list(adjacency), cell_type, n_classes, num_permutation, threads, seed
+        list(adjacency), cell_type, n_classes, num_permutation, threads, seed,
     )
