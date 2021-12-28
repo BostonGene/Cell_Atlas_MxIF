@@ -39,8 +39,9 @@ if __name__ == "__main__":
             "submodule": ["py.typed"],
             "cell_typing": ["py.typed"],
             "permutation": ["py.typed"],
+            "plotting": ["py.typed"],
         },
-        
+
         setup_requires=['wheel'],
         install_requires=project_dir.joinpath("requirements.txt").read_text().split("\n"),
         configuration=configuration,
@@ -53,4 +54,4 @@ if __name__ == "__main__":
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
         ],
-)
+    )
