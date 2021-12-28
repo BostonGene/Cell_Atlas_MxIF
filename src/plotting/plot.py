@@ -54,22 +54,22 @@ def cell_typing_plot(
     if difference:
         raise ValueError(f"Cell types don't match palette for {difference}!")
 
-    cells = cells.copy()
     cells = cells.rename_axis("cell_index")
     cells = cells.reset_index(name="object_type")
-    cells.cell_index = cells.cell_index.astype(int)
+    cells['cell_index'] = cells['cell_index'].astype(int)
 
-    if cells.cell_index.max() >= len(contours):
+    if cells['cell_index'].max() >= len(contours):
         raise ValueError(
                 f"Incorrect indexes or contours: maximum "
-                f"contour index ({cells.cell_index.max()+1})"
+                f"contour index ({cells['cell_index'].max()+1})"
                 f" is greater than overall contours count "
                 f"({len(contours)}).",
         )
 
     offset = (-offset_y, -offset_x)
     if (np.array(offset) > 0).any():
-        raise ValueError("Offset values can't be negative!")
+        raise ValueError(f"Offset values can't be negative! "
+                         f"Now {offset_x=}, {offset_y=}.")
 
     shape = (height, width, 3)
     if (np.array(shape) <= 0).any():
@@ -108,8 +108,8 @@ def cell_typing_plot(
         for ix, cnt in enumerate(contours)
         if (cnt.min(axis=0) < upper_constraint).all() and (cnt.max(axis=0) > lower_constraint).all()
     ]
-    contours = np.array(contours)
-    cells = cells[cells.cell_index.isin(contours_indexes)]
+    contours = np.array(contours, dtype='object')
+    cells = cells[cells['cell_index'].isin(contours_indexes)]
     for object_type, object_data in cells.groupby("object_type"):
         type_indexes = object_data["cell_index"].to_list()
         contours_to_draw = contours[type_indexes]
