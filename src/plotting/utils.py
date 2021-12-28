@@ -1,6 +1,7 @@
 import colorsys
 import re
 from typing import Dict, Tuple
+
 from beartype import beartype
 
 
@@ -15,7 +16,6 @@ def raise_for_incorrect_color(palette: Dict[str, str]) -> None:
 
         if found_color is None:
             raise ValueError(f"Color for {object_type} wasn't recognized: {color}.")
-    return
 
 
 @beartype

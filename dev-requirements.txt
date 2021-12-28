@@ -8,7 +8,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-attrs==21.2.0
+attrs==21.3.0
     # via pytest
 backports.entry-points-selectable==1.1.1
     # via virtualenv

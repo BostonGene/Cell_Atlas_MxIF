@@ -1,11 +1,12 @@
 from typing import Dict, List, Optional
 
 from PIL import ImageColor
+from beartype import beartype
 import cv2
 import numpy as np
-import pandas as pd
-from beartype import beartype
 import numpy.typing as npt
+import pandas as pd
+
 from .utils import change_lightness, raise_for_incorrect_color
 
 
