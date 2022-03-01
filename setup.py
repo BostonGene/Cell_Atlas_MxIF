@@ -40,6 +40,7 @@ if __name__ == "__main__":
             "cell_typing": ["py.typed"],
             "permutation": ["py.typed"],
             "plotting": ["py.typed"],
+            "community": ["py.typed"],
         },
 
         setup_requires=['wheel'],

@@ -7,6 +7,7 @@ def configuration(parent_package="", top_path=None):
     config.add_subpackage("cell_typing")
     config.add_subpackage("permutation")
     config.add_subpackage("plotting")
+    config.add_subpackage("community")
     return config
 
 
