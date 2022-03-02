@@ -127,10 +127,10 @@ def count_mask_pixels_in_radius(
     :return: np.ndarray, normalized amount of
              pixels.
     """
-    if len(mask.shape) != 2:
+    if mask.ndim != 2:
         raise ValueError('Mask isn\'t two-dimensional.')
 
-    if len(coordinates.shape) != 2:
+    if coordinates.ndim != 2:
         raise ValueError(f'Unknown coordinates format. Must be Nx2, '
                          f'now {coordinates.shape}')
     if coordinates.shape[1] != 2:
