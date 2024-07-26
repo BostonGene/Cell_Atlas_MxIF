@@ -15,7 +15,7 @@ numpy==1.22.2
     #   pandas
     #   scipy
     #   torchvision
-opencv-python==4.5.5.62
+opencv-python==4.7.0.72
     # via -r requirements.in
 pandas==1.4.1
     # via -r requirements.in
@@ -41,3 +41,7 @@ tqdm==4.63.0
     # via -r requirements.in
 typing-extensions==4.1.1
     # via torch
+matplotlib==3.7.5
+scikit-image==0.21.0
+scikit-learn==1.0.2
+imagecodecs==2021.3.31
