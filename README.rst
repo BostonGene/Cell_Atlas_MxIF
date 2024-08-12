@@ -1,6 +1,12 @@
 MxIFPublic
 ================
-Repository contains all original code we used to process MxIF data as described in ["A Multi-scale, Multiomic Atlas of Human Normal and Follicular Lymphoma Lymph Nodes"](https://www.biorxiv.org/content/10.1101/2022.06.03.494716v1) preprint.
+Repository contains all original code we used to process MxIF data as described in ["Multi-omic profiling of follicular lymphoma reveals changes in tissue architecture and enhanced stromal remodeling in high-risk patients"](https://doi.org/10.1016/j.ccell.2024.02.001).
+
+Installation
+------------
+To install the package, it is recommended to use a virtual environment with Python 3.8, as newer versions may produce errors. Once the virtual environment is set up, navigate to the root directory of Cell_Atlas_MxIF and simply run the following command: `pip install .`
+
+After successfully installing the package, navigate to the notebooks folder to explore the example notebooks. For tessellation analysis, open the ``tessellation_example.ipynb`` notebook. The data required for these examples is available in the IDR repository under the accession number idr0158.
 
 Requirements
 ------------
