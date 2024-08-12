@@ -4,7 +4,7 @@ Repository contains all original code we used to process MxIF data as described 
 
 Installation
 ------------
-To install the package, it is recommended to use a virtual environment with Python 3.8, as newer versions may produce errors. Once the virtual environment is set up, navigate to the root directory of Cell_Atlas_MxIF and simply run the following command: `pip install .`
+To install the package, it is recommended to use a virtual environment with Python 3.8, as newer versions may produce errors. Once the virtual environment is set up, navigate to the root directory of Cell_Atlas_MxIF and simply run the following command: ``pip install .``
 
 After successfully installing the package, navigate to the notebooks folder to explore the example notebooks. For tessellation analysis, open the ``tessellation_example.ipynb`` notebook. The data required for these examples is available in the IDR repository under the accession number idr0158.
 
